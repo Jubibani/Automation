@@ -15,12 +15,12 @@ $chromeOptions.AddArgument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x6
 $chromeOptions.AddArgument("--disable-blink-features=AutomationControlled")
 
 
-# Create a new ChromeDriver instance with ChromeOptions
-$driver = New-Object OpenQA.Selenium.Chrome.ChromeDriver($chromeDriverPath, $chromeOptions)
+# # Create a new ChromeDriver instance with ChromeOptions
+# $driver = New-Object OpenQA.Selenium.Chrome.ChromeDriver($chromeDriverPath, $chromeOptions)
 
 function delay {
     #im adding a delay. Displaying the count down with a for loop since powshell doesnt have a built-in countdown.
-    Write-Host "Delaying before sending keys to email"
+    Write-Host "implementing delay"
     $sleepDuration = 2
     for ($i = $sleepDuration; $i -ge 0; $i--) {
         Write-Host "Waiting... $($i)s remaining"
@@ -151,24 +151,27 @@ function loginToNotionUsingQuickie {
     #im adding a delay. Displaying the count down with a for loop since powshell doesnt have a built-in countdown.
     delay
     #click for the gmail butto
-    $continueWithGmailButtonPath= '//*[@id="notion-app"]/div/div[1]/div/main/div/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div'
-    $continueWithGmailButton = $driver.FindElementByXPath($continueWithGmailButtonPath);
+    $continueWithGmailButton = $newDriver.FindElementByXPath("//*[@id='notion-app']/div/div[1]/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div")
+    Write-Host "Continuing with Gmail Account"
     $continueWithGmailButton.Click()
 
     Write-Host "button Clicked"
     # Switch to the newly opened window or frame, also this will act as the delay
-    $driver.SwitchTo().Window($driver.WindowHandles[-1])
-    Write-Host "switched to mini window"
-    Write-Host "done delaying for gmail input"
+    # $driver.SwitchTo().Window($driver.WindowHandles[-1])
+    # Write-Host "switched to mini window"
+    # Write-Host "done delaying for gmail input"
 
     delay
-    # Enter the Gmail 
-    $emailField = $driver.FindElementById("identifierId")
-    $emailField.SendKeys("strawberryloli3@gmail.com")
+
+    delay
+    $emailInputField = $wait.Until([OpenQA.Selenium.Support.UI.ExpectedConditions]::ElementIsVisible([OpenQA.Selenium.By]::Id("identifierId")))
+    Write-Host "Email Input has been Identified"
+    # Enter the Gmail
+    $emailInputField.SendKeys("strawberryloli3@gmail.com")
     Write-Host "gmail successfully entered"
-    # Find the "Next" button by XPath
-    
-    $nextButton = $driver.FindElementByXPath("//button[@type='button']//span[text()='Next']")
+
+    # Wait for the "Next" button to be available
+    $nextButton = $newDriver.FindElementByXPath("//button[@id='identifierNext']")
     Write-Host "nextButton element identified"
 
     # Click the "Next" button
@@ -181,7 +184,7 @@ function loginToNotionUsingQuickie {
     Start-Sleep -Seconds 2
     
 }
-loginToUcCanvasUsingQuickie 
-loginToClaudeAi
-loginToGithubUsingQuickie
+# loginToUcCanvasUsingQuickie 
+# loginToClaudeAi
+# loginToGithubUsingQuickie
 loginToNotionUsingQuickie  
