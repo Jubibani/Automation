@@ -56,11 +56,8 @@ they are both `Quickie` → but differentiated by usage. though i use both, i st
 
 ---
 
-# Usage
+### Installation and Usage: https://github.com/Jubibani/Quickie-Automation/wiki/Installation-and-Usage-for-QuickiePow
 
 ---
-
-# Installation
-
 
 more to be followed....
