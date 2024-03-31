@@ -1,42 +1,64 @@
-# `Meet Cleanie And Quickie`
+# Meet Quickie
 
-- `"Cleanie"` is a `bat. file` that cleans your computer’s unnecessary files if executed.
-- `"Quickie"` is also a `bat. file` but opens up your Chrome web page with your necessary sites. making you work-ready and boosting your productivity.
+####  Quickie (bat script file)
+https://github.com/Jubibani/Automation/assets/125711731/9fd69c68-6608-440b-8787-b18a9903f4ab
+#### Quickie Pow (powershell script file)
 
-# `Why make this?`
+![image](https://github.com/Jubibani/Automation/assets/125711731/685b7658-dd51-4c68-abf0-bfd21118438d)
 
-- Working is a hobby of mine but I also have leisure to play games. that’s when I need to clean and delete the trash from `temp`, `%temp%`, and `prefetch`, and then delete it again from the `recycle bin`. — which is a hassle so I made `"Cleanie"`.
-- Whether I go to class or learn from home, I have to open up and log in again to certain sites for my needed tools which is quite a hassle especially when going to school! —so I made `"Quickie"`
+# Why are there 2 version?
 
-I reckon it would be best to leave repetitive tasks to automation to be able to do more important things, save time, and be productive. 
+`bat script` vs `power shell script` 
+
+QUICKIE `BAT` SCRIPT FILE
+
+![quickie](https://github.com/Jubibani/Automation/assets/125711731/7e26f36c-9a78-461f-9eb3-6c03cdfa58c0)
+
+*This version of Quickie is for light automation for opening necessary sites.* 
+
+- logged in with user profile.
+- can enable incognito.
+
+
+> ☝ suitable for personal computers only.
+(in your office or in your home ) use.
+
+
+QUICKIE `POWERSHELL` SCRIPT FILE OR `QUICKIEPOW`
+
+![quickiepow](https://github.com/Jubibani/Automation/assets/125711731/0e3a9646-f110-49cd-8f8b-d5be6f5ff44e)
+
+
+this version of Quickie is more powerful. 
+
+- it has a password before logging in.
+- incognito enabled.
+
+
+> ☝ suitable for lab computers. 
+a common example is in college. where one computer is used by many users.
+
+
+they are both `Quickie` → but differentiated by usage. though i use both, i still prefer the version `QuickiePow` since i use it at my university where many other students also use my computer unit. 
+
+# Project Title And Description
+
+`Project Title`: Quickie
+
+> ✍️ description:
+• `"Quickie"` opens up your Chrome web page with your necessary sites. making you work-ready and boosting your productivity.
+
+
+### Why Did I Make This?
+
+ Whether I go to class or learn from home, I have to open up and log in again to certain sites for my needed tools which is quite a hassle especially when going to school! —so I made `"Quickie"` 
+
+- I reckon it would be best to leave repetitive tasks to automation to be able to do more important things, save time, and be productive.
 
 ---
 
-# `Why are there many files?`
-
-> Indeed. it is separated  in to 2 folders named `bat.scripts` and `pow.scripts.`
-> 
-
-`bat scripts` is for automating only within your local computer. —but `powershell scripts` is more powerful than bat scripting. we can interact with web with it.
-
-<aside>
-📌 want to know more?
-
-1. `Batch scripts (**.bat** files)` —are indeed primarily used for automating tasks on your local computer within the Windows command-line environment. They're suitable for basic scripting tasks and system administration on Windows.
-2. **`PowerShell scripts`** —PowerShell is more powerful than batch scripting and offers more capabilities, including interacting with web services, managing Windows components, and handling more complex tasks. PowerShell scripts (**`.ps1`** files) can interact with web services, perform remote management tasks, and integrate with other Microsoft technologies.
-</aside>
-
-**So, to clarify:**
-
-- Batch scripts are limited in their capabilities compared to PowerShell.
-- PowerShell scripts are indeed more powerful and versatile, and they can interact with web services among other things.
-- PowerShell is designed to replace and enhance the functionality of older command-line interfaces like batch scripting in the Windows ecosystem.
-
-## `It Depends on you`
-
-- **`Choose Batch scripts`** —If you need to perform simple, local automation tasks on Windows, such as file manipulation, basic system administration, or running a series of commands sequentially, batch scripts can be effective and straightforward.
-- **`PowerShell scripts`** —If your tasks involve more complex operations, such as interacting with web services, managing system configurations, handling advanced data processing, or performing remote administration tasks, PowerShell provides a more powerful and flexible scripting environment.
+# Usage
 
 ---
 
-## More to be followed…
+# Installation
