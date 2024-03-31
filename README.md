@@ -1,4 +1,15 @@
 # Meet Quickie
+`Project Title`: Quickie
+
+> ✍️ description:
+• `"Quickie"` opens up your Chrome web page with your necessary sites. making you work-ready and boosting your productivity.
+
+
+### Why Did I Make Quickie Automation?
+
+ Whether I go to class or learn from home, I have to open up and log in again to certain sites for my needed tools which is quite a hassle especially when going to school! —so I made `"Quickie"` 
+
+- I reckon, It would be best to leave repetitive tasks to automation to be able to do more important things, save time, and be productive.
 
 ####  Quickie (bat script file)
 https://github.com/Jubibani/Automation/assets/125711731/9fd69c68-6608-440b-8787-b18a9903f4ab
@@ -41,19 +52,7 @@ a common example is in college. where one computer is used by many users.
 
 they are both `Quickie` → but differentiated by usage. though i use both, i still prefer the version `QuickiePow` since i use it at my university where many other students also use my computer unit. 
 
-# Project Title And Description
 
-`Project Title`: Quickie
-
-> ✍️ description:
-• `"Quickie"` opens up your Chrome web page with your necessary sites. making you work-ready and boosting your productivity.
-
-
-### Why Did I Make This?
-
- Whether I go to class or learn from home, I have to open up and log in again to certain sites for my needed tools which is quite a hassle especially when going to school! —so I made `"Quickie"` 
-
-- I reckon it would be best to leave repetitive tasks to automation to be able to do more important things, save time, and be productive.
 
 ---
 
@@ -62,3 +61,6 @@ they are both `Quickie` → but differentiated by usage. though i use both, i st
 ---
 
 # Installation
+
+
+more to be followed....
