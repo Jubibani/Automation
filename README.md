@@ -4,6 +4,12 @@
 > ✍️ description:
 • `"Quickie"` opens up your Chrome web page with your necessary sites. making you work-ready and boosting your productivity.
 
+## Current Sites
+
+ - Canvas
+ - Notion
+ - Github
+ - Claude
 
 ### Why Did I Make Quickie Automation?
 
