@@ -7,9 +7,9 @@
 ## Current Sites
 
  - Canvas
- - Notion
+ - Notion (Google Log in) 
  - Github
- - Claude
+ - Claude (Google Log in)
 
 ### Why Did I Make Quickie Automation?
 
@@ -35,6 +35,7 @@ QUICKIE `BAT` SCRIPT FILE
 
 - logged in with user profile.
 - can enable incognito.
+- made with bat.file
 
 
 > ☝ suitable for personal computers only.
@@ -50,7 +51,7 @@ this version of Quickie is more powerful.
 
 - it has a password before logging in.
 - incognito enabled.
-
+- made with powershell with selenium (more suitable with web automation)
 
 > ☝ suitable for lab computers. 
 a common example is in college. where one computer is used by many users.
