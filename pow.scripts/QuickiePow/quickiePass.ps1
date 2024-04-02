@@ -1,7 +1,7 @@
 
   
     #change it to whatever you put the ascii art in
-    $asciiArtFilePath = "C:\Users\CJ\Desktop\LocalRepos\Automation\pow.scripts\QuickiePow\theRock.txt"
+    $asciiArtFilePath = "C:\Users\CJ\Desktop\LocalRepos\Automation\pow.scripts\QuickiePow\ASCII art\theRock.txt"
     $asciiArt = Get-Content $asciiArtFilePath -Raw -Encoding UTF8
 
     # Output the ASCII art

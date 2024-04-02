@@ -156,27 +156,47 @@ function loginToNotionUsingQuickie {
     $continueWithGmailButton.Click()
 
     Write-Host "button Clicked"
-    # Switch to the newly opened window or frame, also this will act as the delay
-    # $driver.SwitchTo().Window($driver.WindowHandles[-1])
-    # Write-Host "switched to mini window"
-    # Write-Host "done delaying for gmail input"
-
     delay
+    # Switch to the new window
+    $newdriver.SwitchTo().Window($newdriver.WindowHandles[-1])
 
-    delay
-    $emailInputField = $wait.Until([OpenQA.Selenium.Support.UI.ExpectedConditions]::ElementIsVisible([OpenQA.Selenium.By]::Id("identifierId")))
+   # Find the email input field and enter the Gmail address
+    $emailInputField = $newDriver.FindElementByXPath("//input[@id='identifierId']")
     Write-Host "Email Input has been Identified"
     # Enter the Gmail
     $emailInputField.SendKeys("strawberryloli3@gmail.com")
     Write-Host "gmail successfully entered"
+    # Find the "Next" button by class name
+    delay
 
-    # Wait for the "Next" button to be available
-    $nextButton = $newDriver.FindElementByXPath("//button[@id='identifierNext']")
-    Write-Host "nextButton element identified"
+    # # button element
+    # $nextButton = $newDriver.FindElementByClassName("VfPpkd-LgbsSe")
+    # $nextButton.Click()
+    # Write-Host "button element clicked!"
+    # #nextDivButton-1 element
+    # $nextDivButton1 = $newDriver.FindElementByClassName("VfPpkd-Jh9lGc")
+    # $nextDivButton1.Click()
+    # Write-Host "nextDivButton-1 clicked!"
+    # #nextDivButton-2 element
+    # $nextDivButton2 = $newDriver.FindElementByClassName("VfPpkd-J1Ukfc-LhBDec")
+    # $nextDivButton2.Click()
+    # Write-Host "nextDivButton-2 clicked!"
+    # #nextDivButton-3 element
+    # $nextDivButton3 = $newDriver.FindElementByClassName("VfPpkd-RLmnJb")
+    # $nextDivButton3.Click()
+    # Write-Host "nextDivButton-3 clicked!"
+    # $nextSpanButton = $newDriver.FindElementByClassName("VfPpkd-vQzf8d")
+    # $nextSpanButton.Click()
+    # Write-Host "Next button clicked!"
 
-    # Click the "Next" button
-    $nextButton.Click()
-    Write-Host "nextButton clicked!"
+    # Find the div wrapping the button by its id
+    $nextDiv = $newDriver.FindElementById("identifierNext")
+
+    # Click the div
+    $nextDiv.Click()
+
+    Write-Host "JsController clicked!"
+
 
     Write-Host "you should be logged in to your Notion By Now!"
 
