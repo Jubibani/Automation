@@ -1,7 +1,6 @@
 
-  
     #change it to whatever you put the ascii art in
-    $asciiArtFilePath = "C:\Users\CJ\Desktop\LocalRepos\Automation\pow.scripts\QuickiePow\ASCII art\theRock.txt"
+    $asciiArtFilePath = "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation\pow.scripts\QuickiePow\ASCII art\theRock.txt"
     $asciiArt = Get-Content $asciiArtFilePath -Raw -Encoding UTF8
 
     # Output the ASCII art
@@ -11,7 +10,8 @@
     
     if ($passwordInput -eq "HH211R") {
         Write-Host "logging in as Jubibani"
-        Start-Process -FilePath powershell.exe -ArgumentList "-WindowStyle Hidden -File 'C:\Users\CJ\Desktop\LocalRepos\Automation\pow.scripts\QuickiePow\quickieLog.vbs'"
+        Start-Process -FilePath powershell.exe -ArgumentList "-File 'C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation\pow.scripts\QuickiePow\quickiePow.ps1'" -Wait
+        
         
     } else {
         Write-Host "Wrong password. Exiting..."
