@@ -15,12 +15,12 @@ $chromeOptions.AddArgument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x6
 $chromeOptions.AddArgument("--disable-blink-features=AutomationControlled")
 
 
-# Create a new ChromeDriver instance with ChromeOptions
+# # Create a new ChromeDriver instance with ChromeOptions
 $driver = New-Object OpenQA.Selenium.Chrome.ChromeDriver($chromeDriverPath, $chromeOptions)
 
 function delay {
     #im adding a delay. Displaying the count down with a for loop since powshell doesnt have a built-in countdown.
-    Write-Host "Delaying before sending keys to email"
+    Write-Host "implementing delay"
     $sleepDuration = 2
     for ($i = $sleepDuration; $i -ge 0; $i--) {
         Write-Host "Waiting... $($i)s remaining"
@@ -50,9 +50,6 @@ function loginToUcCanvasUsingQuickie{
 
     Write-Host "Switchin to another Window"
     switchWindow
-
-    delay
-    Write-Host "delaying"
 
     #enter password
     Write-Host "Entering School Password"
@@ -102,6 +99,7 @@ function loginToClaudeAi {
 
 }
 function loginToGithubUsingQuickie {
+    delay
     # Open a new browser window
     $driver.ExecuteScript("window.open();")
 
@@ -134,57 +132,94 @@ function loginToGithubUsingQuickie {
     $signInButton.Click()
     Write-Host "Sign-in Button Clicked"
 
+    delay
+
+    # Find the link by its data-test-selector attribute
+    $link = $driver.FindElementByCssSelector("a[data-test-selector='gh-mobile-link']")
+
+    # Click the link
+    $link.Click()
     Write-Host "you should be logged in to your Github By Now!"
 
     Write-Host "delay with 2 seconds for upcoming boot site"
     Start-Sleep -Seconds 2
 }
 
+
 function loginToNotionUsingQuickie {
 # Create ChromeOptions instance for the new window
     $newChromeOptions = New-Object OpenQA.Selenium.Chrome.ChromeOptions
     $newChromeOptions.AddArgument("--incognito")
 
-    # Create a new ChromeDriver instance with ChromeOptions for the new window
-    $newDriver = New-Object OpenQA.Selenium.Chrome.ChromeDriver($chromeDriverPath, $newChromeOptions)
+    # Add the argument for user data directory
+    $userDataDir = "C:\Users\CJ\AppData\Local\Google\Chrome\User Data\"
+    $newChromeOptions.AddArgument("--user-data-dir=$userDataDir")
 
+
+    # # Create a new ChromeDriver instance with ChromeOptions for the new window
+    $newDriver = New-Object OpenQA.Selenium.Chrome.ChromeDriver($chromeDriverPath, $newChromeOptions)
     # Navigate to the website where you want to log in (in the new window)
     $newDriver.Navigate().GoToUrl("https://www.notion.so/login")
+
 
     #im adding a delay. Displaying the count down with a for loop since powshell doesnt have a built-in countdown.
     delay
     #click for the gmail butto
-    $continueWithGmailButtonPath= '//*[@id="notion-app"]/div/div[1]/div/main/div/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div'
-    $continueWithGmailButton = $driver.FindElementByXPath($continueWithGmailButtonPath);
+    $continueWithGmailButton = $newDriver.FindElementByXPath("//*[@id='notion-app']/div/div[1]/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div")
+    Write-Host "Continuing with Gmail Account"
     $continueWithGmailButton.Click()
 
     Write-Host "button Clicked"
-    # Switch to the newly opened window or frame, also this will act as the delay
-    $driver.SwitchTo().Window($driver.WindowHandles[-1])
-    Write-Host "switched to mini window"
-    Write-Host "done delaying for gmail input"
-
     delay
-    # Enter the Gmail 
-    $emailField = $driver.FindElementById("identifierId")
-    $emailField.SendKeys("strawberryloli3@gmail.com")
-    Write-Host "gmail successfully entered"
-    # Find the "Next" button by XPath
-    
-    $nextButton = $driver.FindElementByXPath("//button[@type='button']//span[text()='Next']")
-    Write-Host "nextButton element identified"
+    # Switch to the new window
+    $newdriver.SwitchTo().Window($newdriver.WindowHandles[-1])
 
-    # Click the "Next" button
+   # Find the email input field and enter the Gmail address
+    $emailInputField = $newDriver.FindElementByXPath("//input[@id='identifierId']")
+    Write-Host "Email Input has been Identified"
+    # Enter the Gmail
+    $emailInputField.SendKeys("strawberryloli3@gmail.com")
+    Write-Host "gmail successfully entered"
+    # Find the "Next" button by class name
+    delay
+
+    # button element
+    $nextButton = $newDriver.FindElementByClassName("VfPpkd-LgbsSe")
     $nextButton.Click()
-    Write-Host "nextButton clicked!"
+    Write-Host "button element clicked!"
+    #nextDivButton-1 element
+    $nextDivButton1 = $newDriver.FindElementByClassName("VfPpkd-Jh9lGc")
+    $nextDivButton1.Click()
+    Write-Host "nextDivButton-1 clicked!"
+    #nextDivButton-2 element
+    $nextDivButton2 = $newDriver.FindElementByClassName("VfPpkd-J1Ukfc-LhBDec")
+    $nextDivButton2.Click()
+    Write-Host "nextDivButton-2 clicked!"
+    #nextDivButton-3 element
+    $nextDivButton3 = $newDriver.FindElementByClassName("VfPpkd-RLmnJb")
+    $nextDivButton3.Click()
+    Write-Host "nextDivButton-3 clicked!"
+    $nextSpanButton = $newDriver.FindElementByClassName("VfPpkd-vQzf8d")
+    $nextSpanButton.Click()
+    Write-Host "Next button clicked!"
+
+    # Find the div wrapping the button by its id
+    $nextDiv = $newDriver.FindElementById("identifierNext")
+
+    # Click the div
+    $nextDiv.Click()
+
+    Write-Host "JsController clicked!"
+
 
     Write-Host "you should be logged in to your Notion By Now!"
 
+    
     Write-Host "delay with 2 seconds for upcoming boot site"
     Start-Sleep -Seconds 2
     
 }
 loginToUcCanvasUsingQuickie 
-loginToClaudeAi
+# loginToClaudeAi
 loginToGithubUsingQuickie
-loginToNotionUsingQuickie  
+# loginToNotionUsingQuickie 
