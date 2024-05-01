@@ -1,6 +1,7 @@
 ﻿# Import Selenium WebDriver module
 Import-Module Selenium
 
+Write-Host "Quickie Passed!"
 # Set the path to ChromeDriver (change it if you have to)
 $chromeDriverPath = "C:\selenium-selenium-4.18.0"
 # Start ChromeDriver process
