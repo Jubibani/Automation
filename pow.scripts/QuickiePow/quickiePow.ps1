@@ -1,24 +1,25 @@
 ﻿# Import Selenium WebDriver module
 Import-Module Selenium
+Add-Type -AssemblyName System.Threading
 
 Write-Host "Quickie Passed!"
 # Set the path to ChromeDriver (change it if you have to)
 $chromeDriverPath = "C:\selenium-selenium-4.18.0"
 # Start ChromeDriver process
 Start-Process -FilePath "C:\selenium-selenium-4.18.0\chromedriver.exe" -WindowStyle Hidden
-# Create ChromeOptions instance and set unhandledPromptBehavior to ignore
+# # Create ChromeOptions instance and set unhandledPromptBehavior to ignore
 $chromeOptions = New-Object OpenQA.Selenium.Chrome.ChromeOptions
-$chromeOptions.AddArgument("--unhandledPromptBehavior=ignore")
+# $chromeOptions.AddArgument("--unhandledPromptBehavior=ignore")
 $chromeOptions.AddArgument("--incognito")  # Added incognito argument here
 
-# Add user agent and disable automation flags to mimic a real user
-$chromeOptions.AddArgument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36")
-$chromeOptions.AddArgument("--disable-blink-features=AutomationControlled")
+# # Add user agent and disable automation flags to mimic a real user
+# $chromeOptions.AddArgument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36")
+# $chromeOptions.AddArgument("--disable-blink-features=AutomationControlled")
 
 
 # # Create a new ChromeDriver instance with ChromeOptions
 $driver = New-Object OpenQA.Selenium.Chrome.ChromeDriver($chromeDriverPath, $chromeOptions)
-
+#* usable functions in here
 function delay {
     #im adding a delay. Displaying the count down with a for loop since powshell doesnt have a built-in countdown.
     Write-Host "implementing delay"
@@ -33,20 +34,40 @@ function switchWindow {
     # Switch to the newly opened window or frame, also this will act as the delay
 $driver.SwitchTo().Window($driver.WindowHandles[-1])
 }
+function Wait-WebDriverElement {
+    param (
+        [Parameter(Mandatory = $true)]
+        [OpenQA.Selenium.IWebDriver]$Driver,
+
+        [Parameter(Mandatory = $true)]
+        [System.Management.Automation.ScriptBlock]$ScriptBlock
+    )
+
+    $wait = New-Object OpenQA.Selenium.Support.UI.WebDriverWait -ArgumentList $Driver, ([timespan]::FromSeconds(30))
+    $wait.Until($ScriptBlock)
+}
+
+#* variables to be used
+    # Implement explicit wait for the email input field to be present
+    $wait = New-Object OpenQA.Selenium.Support.UI.WebDriverWait -ArgumentList $driver, ([timespan]::FromSeconds(30))
+#*functions to be called
 function loginToUcCanvasUsingQuickie{
     $driver.Navigate().GoToUrl("https://uc-bcf.instructure.com/")
     
     #implement delay to wait for booting process
     delay
     Write-Host "delaying"
+    #implicit wait for up to 10 seconds
+    $driver.Manage().Timeouts().ImplicitWait = (New-TimeSpan -Seconds 10)
     #we enter the school email for our canvas
     Write-Host "Entering School Email"
-    $emailSchool = $driver.FindElementById("i0116")
+    $emailSchool = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("i0116") }
     $emailSchool.SendKeys("cao5224@students.uc-bcf.edu.ph")
 
     #click next button after entering my gmail
     Write-Host "Clicking Next Button"
-    $enterNextButton = $driver.FindElementById("idSIButton9")
+    # $enterNextButton = $wait.Until({$driver.FindElementById("idSIButton9") })
+    $enterNextButton = Wait-WebDriverElement -Driver $driver -ScriptBlock {$driver.FindElementById("idSIButton9") }
     $enterNextButton.Click()
 
     Write-Host "Switchin to another Window"
@@ -54,7 +75,8 @@ function loginToUcCanvasUsingQuickie{
 
     #enter password
     Write-Host "Entering School Password"
-    $emailSchoolPass = $driver.FindElementById("i0118")
+    # $emailSchoolPass = $driver.FindElementById("i0118")
+    $emailSchoolPass = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("i0118") }
     $emailSchoolPass.SendKeys("Jubibi'sstrawbibi")
 
     #click next button to submit to login

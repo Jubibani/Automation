@@ -21,7 +21,7 @@ if ($passwordInput -eq "HH211R") {
     Write-Host "Logging in as Jubibani"
     # Start a new PowerShell process to run quickiePow.ps1
     # Start-Process -FilePath $powerShellExePath -ArgumentList "-ExecutionPolicy Bypass", "-File 'C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation\pow.scripts\QuickiePow\quickiePow.ps1'"
-    Start-Process -FilePath "powershell.exe" -ArgumentList "-File", "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation\pow.scripts\QuickiePow\quickiePow.ps1" -Wait
+    Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass", "-File", "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation\pow.scripts\QuickiePow\quickiePow.ps1" -Wait
 } else {
     Write-Host "Wrong password. Exiting..."
     Exit 1
