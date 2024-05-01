@@ -12,9 +12,9 @@ $chromeOptions = New-Object OpenQA.Selenium.Chrome.ChromeOptions
 # $chromeOptions.AddArgument("--unhandledPromptBehavior=ignore")
 $chromeOptions.AddArgument("--incognito")  # Added incognito argument here
 
-# # Add user agent and disable automation flags to mimic a real user
-# $chromeOptions.AddArgument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36")
-# $chromeOptions.AddArgument("--disable-blink-features=AutomationControlled")
+# Add user agent and disable automation flags to mimic a real user
+$chromeOptions.AddArgument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36")
+$chromeOptions.AddArgument("--disable-blink-features=AutomationControlled")
 
 
 # # Create a new ChromeDriver instance with ChromeOptions
@@ -44,7 +44,8 @@ function Wait-WebDriverElement {
     )
 
     $wait = New-Object OpenQA.Selenium.Support.UI.WebDriverWait -ArgumentList $Driver, ([timespan]::FromSeconds(30))
-    $wait.Until($ScriptBlock)
+    $element = $wait.Until([System.Func[OpenQA.Selenium.IWebDriver, OpenQA.Selenium.IWebElement]]{ $ScriptBlock.Invoke($args[0]) })
+    return $element
 }
 
 #* variables to be used
@@ -61,15 +62,19 @@ function loginToUcCanvasUsingQuickie{
     $driver.Manage().Timeouts().ImplicitWait = (New-TimeSpan -Seconds 10)
     #we enter the school email for our canvas
     Write-Host "Entering School Email"
-    $emailSchool = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("i0116") }
-    $emailSchool.SendKeys("cao5224@students.uc-bcf.edu.ph")
+    $emailSchool = Wait-WebDriverElement -Driver $driver -ScriptBlock { param($driver) $driver.FindElementById("i0116") }
+    $emailSchool.SendKeys("cao5224@students.uc-bcf-edu.ph")
 
     #click next button after entering my gmail
     Write-Host "Clicking Next Button"
     # $enterNextButton = $wait.Until({$driver.FindElementById("idSIButton9") })
-    $enterNextButton = Wait-WebDriverElement -Driver $driver -ScriptBlock {$driver.FindElementById("idSIButton9") }
+    $enterNextButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { param($driver) $driver.FindElementById("idSIButton9") }
     $enterNextButton.Click()
 
+    delay
+    Write-Host "delaying"
+    #implicit wait for up to 10 seconds
+    $driver.Manage().Timeouts().ImplicitWait = (New-TimeSpan -Seconds 10)
     Write-Host "Switchin to another Window"
     switchWindow
 
@@ -81,14 +86,16 @@ function loginToUcCanvasUsingQuickie{
 
     #click next button to submit to login
     Write-Host "Clicking Next Button"
-    $enterNextButton = $driver.FindElementById("idSIButton9")
+    # $enterNextButton = $driver.FindElementById("idSIButton9")
+    $enterNextButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("idSIButton9") }
     $enterNextButton.Click()
 
     #click yes button
     Write-Host "delay with 2 seconds"
     Start-Sleep -Seconds 1
     Write-Host "Clicking 'Yes' Button"
-    $enterNextButton = $driver.FindElementById("idSIButton9")
+    # $enterNextButton = $driver.FindElementById("idSIButton9")
+    $enterNextButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("idSIButton9") }
     $enterNextButton.Click()
 
     Write-Host "you should be logged in to UC Canvas By Now!"
@@ -109,13 +116,15 @@ function loginToClaudeAi {
     delay
 
     #loginCredentials
-    $emailClaudeField = $driver.FindElementById("email")
+    # $emailClaudeField = $driver.FindElementById("email")
+    $emailClaudeField = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("email") }
     $emailClaudeField.SendKeys("strawberryloli3@gmail.com")
 
     Write-Host "gmail for claude has been entered!"
 
     #click the continue with google button
-    $signInClaudeButton = $driver.FindElementByXPath("//div[contains(text(),'Continue with Google')]")
+    # $signInClaudeButton = $driver.FindElementByXPath("//div[contains(text(),'Continue with Google')]")
+    $signInClaudeButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByXPath("//div[contains(text(),'Continue with Google')]") }
     $signInClaudeButton.Click()
 
 
@@ -133,7 +142,8 @@ function loginToGithubUsingQuickie {
     #implement delay to wait for booting process
     delay
     # Click the "Sign in" button
-    $signInButton = $driver.FindElementByClassName("d-inline-block")
+    # $signInButton = $driver.FindElementByClassName("d-inline-block")
+    $signInButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("d-inline-block") }
     $signInButton.Click()
     Write-Host "Sign-in Button Clicked"
     Write-Host "signinButton Clicked!"
@@ -142,23 +152,27 @@ function loginToGithubUsingQuickie {
     Start-Sleep -Seconds 2
 
     #username and password for my github
-    $loginField = $driver.FindElementById("login_field")
+    # $loginField = $driver.FindElementById("login_field")
+    $loginField = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("login_field") }
     $loginField.SendKeys("Jubibani")
 
-    $passwordField = $driver.FindElementById("password")
+    # $passwordField = $driver.FindElementById("password")
+    $passwordField = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("password") }
     $passwordField.SendKeys("Jubibi'sstrawbibi")
 
     Write-Host "Username and password successfully entered!"
 
     # Click the Sign-in button
-    $signInButton = $driver.FindElementByClassName("btn-primary")
+    # $signInButton = $driver.FindElementByClassName("btn-primary")
+    $signInButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("btn-primary") }
     $signInButton.Click()
     Write-Host "Sign-in Button Clicked"
 
     delay
 
     # Find the link by its data-test-selector attribute
-    $link = $driver.FindElementByCssSelector("a[data-test-selector='gh-mobile-link']")
+    # $link = $driver.FindElementByCssSelector("a[data-test-selector='gh-mobile-link']")
+    $link = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByCssSelector("a[data-test-selector='gh-mobile-link']") }
 
     # Click the link
     $link.Click()
@@ -188,7 +202,8 @@ function loginToNotionUsingQuickie {
     #im adding a delay. Displaying the count down with a for loop since powshell doesnt have a built-in countdown.
     delay
     #click for the gmail butto
-    $continueWithGmailButton = $newDriver.FindElementByXPath("//*[@id='notion-app']/div/div[1]/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div")
+    # $continueWithGmailButton = $newDriver.FindElementByXPath("//*[@id='notion-app']/div/div[1]/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div")
+    $continueWithGmailButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByXPath("//*[@id='notion-app']/div/div[1]/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div") }
     Write-Host "Continuing with Gmail Account"
     $continueWithGmailButton.Click()
 
@@ -198,7 +213,8 @@ function loginToNotionUsingQuickie {
     $newdriver.SwitchTo().Window($newdriver.WindowHandles[-1])
 
    # Find the email input field and enter the Gmail address
-    $emailInputField = $newDriver.FindElementByXPath("//input[@id='identifierId']")
+    # $emailInputField = $newDriver.FindElementByXPath("//input[@id='identifierId']")
+    $emailInputField = Wait-WebDriverElement -Driver $newDriver -ScriptBlock { $args[0].FindElementByXPath("//input[@id='identifierId']") }
     Write-Host "Email Input has been Identified"
     # Enter the Gmail
     $emailInputField.SendKeys("strawberryloli3@gmail.com")
@@ -207,27 +223,33 @@ function loginToNotionUsingQuickie {
     delay
 
     # button element
-    $nextButton = $newDriver.FindElementByClassName("VfPpkd-LgbsSe")
+    # $nextButton = $newDriver.FindElementByClassName("VfPpkd-LgbsSe")
+    $nextButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-LgbsSe") }
     $nextButton.Click()
     Write-Host "button element clicked!"
     #nextDivButton-1 element
-    $nextDivButton1 = $newDriver.FindElementByClassName("VfPpkd-Jh9lGc")
+    # $nextDivButton1 = $newDriver.FindElementByClassName("VfPpkd-Jh9lGc")
+    $nextDivButton1 = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-Jh9lGc") }
     $nextDivButton1.Click()
     Write-Host "nextDivButton-1 clicked!"
     #nextDivButton-2 element
-    $nextDivButton2 = $newDriver.FindElementByClassName("VfPpkd-J1Ukfc-LhBDec")
+    # $nextDivButton2 = $newDriver.FindElementByClassName("VfPpkd-J1Ukfc-LhBDec")
+    $nextDivButton2 = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-J1Ukfc-LhBDec") }
     $nextDivButton2.Click()
     Write-Host "nextDivButton-2 clicked!"
     #nextDivButton-3 element
-    $nextDivButton3 = $newDriver.FindElementByClassName("VfPpkd-RLmnJb")
+    # $nextDivButton3 = $newDriver.FindElementByClassName("VfPpkd-RLmnJb")
+    $nextDivButton3 = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-RLmnJb") }
     $nextDivButton3.Click()
     Write-Host "nextDivButton-3 clicked!"
-    $nextSpanButton = $newDriver.FindElementByClassName("VfPpkd-vQzf8d")
+    # $nextSpanButton = $newDriver.FindElementByClassName("VfPpkd-vQzf8d")
+    $nextSpanButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-vQzf8d") }
     $nextSpanButton.Click()
     Write-Host "Next button clicked!"
 
     # Find the div wrapping the button by its id
-    $nextDiv = $newDriver.FindElementById("identifierNext")
+    # $nextDiv = $newDriver.FindElementById("identifierNext")
+    $nextDiv = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("identifierNext") }
 
     # Click the div
     $nextDiv.Click()
