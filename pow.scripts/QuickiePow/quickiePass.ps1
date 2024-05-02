@@ -34,7 +34,8 @@ if ($passwordInput -eq "HH211R") {
     # exit_delay 
     # Start a new PowerShell process to run quickiePow.ps1
     Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass", "-File", "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation\pow.scripts\QuickiePow\quickiePow.ps1" -Wait -WindowStyle Hidden 
-    Exit 1
+    # Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass", "-File", "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation\pow.scripts\QuickiePow\sampleTest.ps1" -Wait #?Testing Script
+    Exit 1 #? this is only executed until StartProcess is finished Executed
 
     # $filePath = "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation\pow.scripts\QuickiePow\quickiePass.ps1" #*Starting this line is to hide the Pass.ps1 file
     # $fileAttributes = (Get-Item $filePath).Attributes 
