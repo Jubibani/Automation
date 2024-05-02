@@ -53,7 +53,7 @@ function Wait-WebDriverElement {
     $wait = New-Object OpenQA.Selenium.Support.UI.WebDriverWait -ArgumentList $driver, ([timespan]::FromSeconds(30))
 #*functions to be called
 function loginToUcCanvasUsingQuickie{
-    $driver.Navigate().GoToUrl("https://uc-bcf.instructure.com/")
+    $driver.Navigate().GoToUrl("https://uc-bcf.instructure.com/") 
     
     #implement delay to wait for booting process
     delay
@@ -63,7 +63,7 @@ function loginToUcCanvasUsingQuickie{
     #we enter the school email for our canvas
     Write-Host "Entering School Email"
     $emailSchool = Wait-WebDriverElement -Driver $driver -ScriptBlock { param($driver) $driver.FindElementById("i0116") }
-    $emailSchool.SendKeys("cao5224@students.uc-bcf-edu.ph")
+    $emailSchool.SendKeys("...") #!! careful here
 
     #click next button after entering my gmail
     Write-Host "Clicking Next Button"
@@ -82,7 +82,7 @@ function loginToUcCanvasUsingQuickie{
     Write-Host "Entering School Password"
     # $emailSchoolPass = $driver.FindElementById("i0118")
     $emailSchoolPass = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("i0118") }
-    $emailSchoolPass.SendKeys("Jubibi'sstrawbibi")
+    $emailSchoolPass.SendKeys("...") #!! careful here
 
     #click next button to submit to login
     Write-Host "Clicking Next Button"
@@ -118,7 +118,7 @@ function loginToClaudeAi {
     #loginCredentials
     # $emailClaudeField = $driver.FindElementById("email")
     $emailClaudeField = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("email") }
-    $emailClaudeField.SendKeys("strawberryloli3@gmail.com")
+    $emailClaudeField.SendKeys("...") #!! careful here
 
     Write-Host "gmail for claude has been entered!"
 
@@ -154,11 +154,11 @@ function loginToGithubUsingQuickie {
     #username and password for my github
     # $loginField = $driver.FindElementById("login_field")
     $loginField = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("login_field") }
-    $loginField.SendKeys("Jubibani")
+    $loginField.SendKeys("...") #!! careful here
 
     # $passwordField = $driver.FindElementById("password")
     $passwordField = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("password") }
-    $passwordField.SendKeys("Jubibi'sstrawbibi")
+    $passwordField.SendKeys("...") #!! careful here
 
     Write-Host "Username and password successfully entered!"
 
@@ -217,7 +217,7 @@ function loginToNotionUsingQuickie {
     $emailInputField = Wait-WebDriverElement -Driver $newDriver -ScriptBlock { $args[0].FindElementByXPath("//input[@id='identifierId']") }
     Write-Host "Email Input has been Identified"
     # Enter the Gmail
-    $emailInputField.SendKeys("strawberryloli3@gmail.com")
+    $emailInputField.SendKeys("...") #!! careful here
     Write-Host "gmail successfully entered"
     # Find the "Next" button by class name
     delay
