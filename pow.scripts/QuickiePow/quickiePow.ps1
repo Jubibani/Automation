@@ -187,34 +187,30 @@ function loginToNotionUsingQuickie {
 # Create ChromeOptions instance for the new window
     $newChromeOptions = New-Object OpenQA.Selenium.Chrome.ChromeOptions
     $newChromeOptions.AddArgument("--incognito")
-
-    # Add the argument for user data directory
-    $userDataDir = "C:\Users\CJ\AppData\Local\Google\Chrome\User Data\"
-    $newChromeOptions.AddArgument("--user-data-dir=$userDataDir")
-
-
+    
     # # Create a new ChromeDriver instance with ChromeOptions for the new window
     $newDriver = New-Object OpenQA.Selenium.Chrome.ChromeDriver($chromeDriverPath, $newChromeOptions)
     # Navigate to the website where you want to log in (in the new window)
     $newDriver.Navigate().GoToUrl("https://www.notion.so/login")
+    Write-Host "prroceeded to notion"
 
 
     #im adding a delay. Displaying the count down with a for loop since powshell doesnt have a built-in countdown.
     delay
     #click for the gmail butto
-    # $continueWithGmailButton = $newDriver.FindElementByXPath("//*[@id='notion-app']/div/div[1]/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div")
-    $continueWithGmailButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByXPath("//*[@id='notion-app']/div/div[1]/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div") }
+    $continueWithGmailButton = $newDriver.FindElementByXPath("//*[@id='notion-app']/div/div[1]/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div")
+    # $continueWithGmailButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByXPath("//*[@id='notion-app']/div/div[1]/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div") }
     Write-Host "Continuing with Gmail Account"
     $continueWithGmailButton.Click()
 
     Write-Host "button Clicked"
     delay
     # Switch to the new window
-    $newdriver.SwitchTo().Window($newdriver.WindowHandles[-1])
+    $newDriver.SwitchTo().Window($newdriver.WindowHandles[-1])
 
    # Find the email input field and enter the Gmail address
-    # $emailInputField = $newDriver.FindElementByXPath("//input[@id='identifierId']")
-    $emailInputField = Wait-WebDriverElement -Driver $newDriver -ScriptBlock { $args[0].FindElementByXPath("//input[@id='identifierId']") }
+    $emailInputField = $newDriver.FindElementByXPath("//input[@id='identifierId']")
+    # $emailInputField = Wait-WebDriverElement -Driver $newDriver -ScriptBlock { $args[0].FindElementByXPath("//input[@id='identifierId']") }
     Write-Host "Email Input has been Identified"
     # Enter the Gmail
     $emailInputField.SendKeys("...") #!! careful here
@@ -222,34 +218,35 @@ function loginToNotionUsingQuickie {
     # Find the "Next" button by class name
     delay
 
-    # button element
+    #! code block used in trial and error [being kept just in case for restrospect]
+    # # button element
     # $nextButton = $newDriver.FindElementByClassName("VfPpkd-LgbsSe")
-    $nextButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-LgbsSe") }
-    $nextButton.Click()
-    Write-Host "button element clicked!"
-    #nextDivButton-1 element
+    # # $nextButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-LgbsSe") }
+    # $nextButton.Click()
+    # Write-Host "button element clicked!"
+    # #nextDivButton-1 element
     # $nextDivButton1 = $newDriver.FindElementByClassName("VfPpkd-Jh9lGc")
-    $nextDivButton1 = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-Jh9lGc") }
-    $nextDivButton1.Click()
-    Write-Host "nextDivButton-1 clicked!"
-    #nextDivButton-2 element
+    # # $nextDivButton1 = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-Jh9lGc") }
+    # $nextDivButton1.Click()
+    # Write-Host "nextDivButton-1 clicked!"
+    # #nextDivButton-2 element
     # $nextDivButton2 = $newDriver.FindElementByClassName("VfPpkd-J1Ukfc-LhBDec")
-    $nextDivButton2 = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-J1Ukfc-LhBDec") }
-    $nextDivButton2.Click()
-    Write-Host "nextDivButton-2 clicked!"
-    #nextDivButton-3 element
+    # # $nextDivButton2 = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-J1Ukfc-LhBDec") }
+    # $nextDivButton2.Click()
+    # Write-Host "nextDivButton-2 clicked!"
+    # #nextDivButton-3 element
     # $nextDivButton3 = $newDriver.FindElementByClassName("VfPpkd-RLmnJb")
-    $nextDivButton3 = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-RLmnJb") }
-    $nextDivButton3.Click()
-    Write-Host "nextDivButton-3 clicked!"
+    # # $nextDivButton3 = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-RLmnJb") }
+    # $nextDivButton3.Click()
+    # Write-Host "nextDivButton-3 clicked!"
     # $nextSpanButton = $newDriver.FindElementByClassName("VfPpkd-vQzf8d")
-    $nextSpanButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-vQzf8d") }
-    $nextSpanButton.Click()
-    Write-Host "Next button clicked!"
+    # # $nextSpanButton = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementByClassName("VfPpkd-vQzf8d") }
+    # $nextSpanButton.Click()
+    # Write-Host "Next button clicked!"
 
     # Find the div wrapping the button by its id
-    # $nextDiv = $newDriver.FindElementById("identifierNext")
-    $nextDiv = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("identifierNext") }
+    $nextDiv = $newDriver.FindElementById("identifierNext")
+    # $nextDiv = Wait-WebDriverElement -Driver $driver -ScriptBlock { $args[0].FindElementById("identifierNext") }
 
     # Click the div
     $nextDiv.Click()
@@ -264,7 +261,7 @@ function loginToNotionUsingQuickie {
     Start-Sleep -Seconds 2
     
 }
-loginToUcCanvasUsingQuickie 
-# loginToClaudeAi
-loginToGithubUsingQuickie
-# loginToNotionUsingQuickie 
+# loginToUcCanvasUsingQuickie 
+# loginToClaudeAi #! work in progress
+# loginToGithubUsingQuickie
+loginToNotionUsingQuickie  #! work in progress
