@@ -53,7 +53,7 @@ function Wait-WebDriverElement {
     $wait = New-Object OpenQA.Selenium.Support.UI.WebDriverWait -ArgumentList $driver, ([timespan]::FromSeconds(30))
 #*functions to be called
 function loginToUcCanvasUsingQuickie{
-    $driver.Navigate().GoToUrl("https://uc-bcf.instructure.com/") 
+    $driver.Navigate().GoToUrl("...") 
     
     #implement delay to wait for booting process
     delay
@@ -184,16 +184,19 @@ function loginToGithubUsingQuickie {
 
 
 function loginToNotionUsingQuickie {
-# Create ChromeOptions instance for the new window
+    # Create ChromeOptions instance for the new window
     $newChromeOptions = New-Object OpenQA.Selenium.Chrome.ChromeOptions
     $newChromeOptions.AddArgument("--incognito")
+    # Add additional arguments
+    $newChromeOptions.AddArgument("--disable-web-security")
+    $newChromeOptions.AddArgument("--user-data-dir")
+    $newChromeOptions.AddArgument("--allow-running-insecure-content")
     
-    # # Create a new ChromeDriver instance with ChromeOptions for the new window
+    # Create a new ChromeDriver instance with ChromeOptions for the new window
     $newDriver = New-Object OpenQA.Selenium.Chrome.ChromeDriver($chromeDriverPath, $newChromeOptions)
     # Navigate to the website where you want to log in (in the new window)
     $newDriver.Navigate().GoToUrl("https://www.notion.so/login")
-    Write-Host "prroceeded to notion"
-
+    Write-Host "Proceeded to Notion"
 
     #im adding a delay. Displaying the count down with a for loop since powshell doesnt have a built-in countdown.
     delay

@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Puppeteer",
+            "program": "${workspaceFolder}/QuickiePow/puppeteer.js",
+            "env": {},
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "runtimeExecutable": "node",
+            "runtimeArgs": ["--inspect-brk"]          
+        }
+    ]
+}

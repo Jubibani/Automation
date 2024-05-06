@@ -1,57 +1,31 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.chrome.service import Service
-import time
+from seleniumbase import BaseCase
+BaseCase.main(__name__, __file__, "--uc", "-s")
 
-chromeDriverPath = "C:\\selenium-selenium-4.18.0\\chromedriver.exe"
-service = Service(chromeDriverPath)
 
-def loginToNotionUsingQuickie():
-    # Create ChromeOptions instance for the new window
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument("--incognito")
+class NotionLoginTest(BaseCase):
+    def test_login_to_notion(self):
+        url = "https://www.notion.so/login"
+        if not self.undetectable:
+            self.get_new_driver(undetectable=True)
+        self.driver.uc_open_with_reconnect(url, 3)
+        self.wait(2)
 
-    # Create a new ChromeDriver instance with ChromeOptions for the new window
-    newDriver = webdriver.Chrome(service=service, options=chrome_options)
+        # ... your login steps here ...
+        self.click('//*[@id="notion-app"]/div/div[1]/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div')
+        self.wait(2)
 
-    # Navigate to the website where you want to log in (in the new window)
-    newDriver.get("https://www.notion.so/login")
-    print("Proceeded to notion")
+        # Switch to the new window
+        self.switch_to_window(1)
 
-    # Wait for the page to load
-    time.sleep(2)
+        # Find the email input field and enter the Gmail address
+        self.type("//input[@id='identifierId']", "...")
+        self.wait(2)
 
-    # Click for the Gmail button
-    continueWithGmailButton = newDriver.find_element(By.XPATH, "//*[@id='notion-app']/div/div[1]/div/main/div[1]/section/div/div/div/div[2]/div[1]/div[1]/div[1]/div")
-    print("Continuing with Gmail Account")
-    continueWithGmailButton.click()
+        # Click the "Next" button
+        self.click("#identifierNext")
+        self.wait(2)
 
-    print("Button Clicked")
-    time.sleep(2)
+        print("You should be logged in to your Notion By Now!")
 
-    # Switch to the new window
-    newDriver.switch_to.window(newDriver.window_handles[-1])
-
-    # Find the email input field and enter the Gmail address
-    emailInputField = WebDriverWait(newDriver, 10).until(
-        EC.presence_of_element_located((By.XPATH, "//input[@id='identifierId']"))
-    )
-    print("Email Input has been Identified")
-    emailInputField.send_keys("...")
-    print("Gmail successfully entered")
-
-    time.sleep(2)
-
-    # Find the div wrapping the button by its id
-    nextDiv = newDriver.find_element(By.ID, "identifierNext")
-
-    # Click the div
-    nextDiv.click()
-
-    print("JsController clicked!")
-    print("You should be logged in to your Notion By Now!")
-    time.sleep(2)
-
-loginToNotionUsingQuickie()
+if __name__ == "__main__":
+    NotionLoginTest().test_login_to_notion()
