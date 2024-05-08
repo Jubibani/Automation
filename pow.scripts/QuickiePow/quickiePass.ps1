@@ -33,7 +33,7 @@ if ($passwordInput -eq "HH211R") {
     Write-Host "Logging in as Jubibani..."
     # exit_delay 
     # Start a new PowerShell process to run quickiePow.ps1
-    Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass", "-File", "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation-Local\pow.scripts\QuickiePow\quickiePow.ps1" -Wait -WindowStyle Hidden 
+    Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass", "-File", "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation-Local\pow.scripts\QuickiePow\modules\quickiePow.ps1" -Wait -WindowStyle Hidden 
     # Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass", "-File", "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation\pow.scripts\QuickiePow\sampleTest.ps1" -Wait #?Testing Script
     Exit 1 #? this is only executed until StartProcess is finished Executed
 
