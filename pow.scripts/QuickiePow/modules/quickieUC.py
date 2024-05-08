@@ -4,23 +4,88 @@ import time
 import traceback
 import tkinter as tk
 import threading
+
+#making it global
+driver = Driver(uc=True)
 # Define the pop-up GUI functions
 def show_error_popup(error_message):
+    def retry_action():
+        UndetectedLoginTest().loging_test_undetected()
+        popup.destroy()
+
+    def quit_action():
+        driver.quit()
+        popup.destroy()
+
     popup = tk.Tk()
     popup.geometry("300x200")
-    popup.title("Error")
+    popup.title("Error, Notion Boot up Failed")
+
     label = tk.Label(popup, text=error_message)
     label.pack(pady=10)
+
+    retry_button = tk.Button(popup, text="Retry", command=retry_action)
+    retry_button.pack(side=tk.LEFT, padx=5)
+
+    quit_button = tk.Button(popup, text="Quit", command=quit_action)
+    quit_button.pack(side=tk.RIGHT, padx=5)
+
     popup.mainloop()
 
-def show_pop_up_notion_running(_message):
+
+def show_pop_up_notion_running(message):
+    def yes_action():
+        # Action to take if user selects Yes
+        popup.destroy()
+        # Perform your action here when the user selects Yes
+
+    def no_action():
+        # Action to take if user selects No
+        popup.destroy()
+        # Perform your action here when the user selects No
+
     popup = tk.Tk()
     popup.geometry("300x200")
-    popup.title("message")
-    label = tk.Label(popup, text=_message)
+    popup.title("Message")
+
+    label = tk.Label(popup, text=message)
     label.pack(pady=10)
+
+    yes_button = tk.Button(popup, text="Yes", command=yes_action)
+    yes_button.pack(side=tk.LEFT, padx=5)
+
+    no_button = tk.Button(popup, text="No", command=no_action)
+    no_button.pack(side=tk.RIGHT, padx=5)
+
     popup.mainloop()
 
+def show_pop_up_to_break_notion(break_message):
+    def yes_action():
+        # Action to take if user selects Yes
+        driver.quit()
+        print("driver has quit the script")
+        popup.destroy()
+        # Perform your action here when the user selects Yes
+
+    def no_action():
+        # Action to take if user selects No
+        popup.destroy()
+        # Perform your action here when the user selects No
+
+    popup = tk.Tk()
+    popup.geometry("300x200")
+    popup.title("Message")
+
+    label = tk.Label(popup, text=break_message)
+    label.pack(pady=10)
+
+    yes_button = tk.Button(popup, text="Yes", command=yes_action)
+    yes_button.pack(side=tk.LEFT, padx=5)
+
+    no_button = tk.Button(popup, text="No", command=no_action)
+    no_button.pack(side=tk.RIGHT, padx=5)
+
+    popup.mainloop()
 
 def show_countdown_popup(duration):
     popup = tk.Tk()
@@ -43,6 +108,9 @@ def show_countdown_popup(duration):
     popup.mainloop()
 BaseCase.main(__name__, __file__, "--uc", "-s", "--incognito")
 
+
+
+
 class UndetectedLoginTest(BaseCase):
     # def loging_test_undetected_with_retry(self):
     #     for _ in range(5):  # Retry the test up to 3 times
@@ -64,13 +132,13 @@ class UndetectedLoginTest(BaseCase):
     #             driver.switch_to.window(window_handles[1])
 
     #             driver.sleep(2)
-    #             driver.type("//input[@id='identifierId']", "...")
+    #             driver.type("//input[@id='identifierId']", "strawberryloli3@gmail.com")
     #             driver.sleep(2)
     #             driver.click("#identifierNext")
     #             driver.sleep(2)
 
     #             driver.wait_for_element_visible("[aria-label='Enter your password']")
-    #             driver.type("[aria-label='Enter your password']", "...")
+    #             driver.type("[aria-label='Enter your password']", "Jubibi'sstrawbibi")
     #             driver.sleep(2)
     #             driver.click("#passwordNext")
 
@@ -90,8 +158,15 @@ class UndetectedLoginTest(BaseCase):
     #             show_error_popup("An error occurred:\n" + traceback.format_exc() + "\nRetrying...")
 
 
-        def loging_test_undetected(self):
-            driver = Driver(uc=True)
+    def loging_test_undetected(self):
+        # for _ in range(5):  # Retry the test up to 5 times
+        #     try:
+            #? user prompt
+            message = "do you want to run notion?"
+            show_pop_up_notion_running(message)
+            error_message = "sometimes, notion is flaky. but i'm here. let me know if you want to restart. if notion sucessfully logged in. feel free to close this window."
+            show_error_popup(error_message)
+            # driver = Driver(uc=True)
             url = "https://www.notion.so/login"
             driver.uc_open_with_reconnect(url, 3)
             # show_pop_up_notion_running("Notion is now running")
@@ -120,11 +195,39 @@ class UndetectedLoginTest(BaseCase):
             print("You should be logged in to your Notion By Now!") 
 
             # while True:
-            #     print("successfully loaded notion")
-            #     pass #TODO: refactor code where the code completely stops after driver stops
-            #         #!! bug: program still runs despite being exited               
+            #     print("successfully loaded notion")        
+            #     time.sleep(1)      
             #     if driver.quit(): 
+            #         break_message = "would you like to quit the driver?"
+            #         show_pop_up_to_break_notion(break_message)
             #         break# If the test runs successfully, exit the loop
+            #     else:pass
+                
+            while True:
+                print("successfully loaded notion")
 
+                pass #TODO: refactor code where the code completely stops after driver stops
+                    #!!bug: sometimes, program still runs despite being exited               
+            
+            # # Display error popup
+            # except Exception as e:
+            #     print("An error occurred:", e)
+            #     traceback.print_exc()  # Print the traceback for debugging
+            #     print("Retrying...")
+            #     # Display error popup
+            #     show_error_popup("An error occurred:\n" + traceback.format_exc() + "\nRetrying...")
+            #     error_message = "Would You Like to Retry?"
+            #     show_error_popup(error_message)
 if __name__ == "__main__":
-    UndetectedLoginTest().loging_test_undetected()
+    try:
+        UndetectedLoginTest().loging_test_undetected()
+    except Exception as e: 
+        print("An error occurred:", e)
+        traceback.print_exc()  # Print the traceback for debugging
+        print("Retrying...")
+        # # Display error popup
+        # show_error_popup("An error occurred:\n" + traceback.format_exc() + "\nRetrying...")
+    finally:
+        print("rebooting phase")
+        error_message = "Would You Like to Retry?"
+        show_error_popup(error_message)

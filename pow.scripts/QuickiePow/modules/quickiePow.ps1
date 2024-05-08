@@ -17,8 +17,6 @@ $chromeOptions.AddArgument("--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x6
 $chromeOptions.AddArgument("--disable-blink-features=AutomationControlled")
 
 
-# # Create a new ChromeDriver instance with ChromeOptions
-$driver = New-Object OpenQA.Selenium.Chrome.ChromeDriver($chromeDriverPath, $chromeOptions)
 #* usable functions in here
 function delay {
     #im adding a delay. Displaying the count down with a for loop since powshell doesnt have a built-in countdown.
@@ -53,6 +51,8 @@ function Wait-WebDriverElement {
     $wait = New-Object OpenQA.Selenium.Support.UI.WebDriverWait -ArgumentList $driver, ([timespan]::FromSeconds(30))
 #*functions to be called
 function loginToUcCanvasUsingQuickie{
+    # # Create a new ChromeDriver instance with ChromeOptions
+    $driver = New-Object OpenQA.Selenium.Chrome.ChromeDriver($chromeDriverPath, $chromeOptions)
     $driver.Navigate().GoToUrl("https://uc-bcf.instructure.com/") 
     
     #implement delay to wait for booting process
@@ -272,7 +272,6 @@ function loginNotionWithSeleniumBase() {
  
 loginToUcCanvasUsingQuickie 
 # # loginToClaudeAi #! work in progress
-loginToGithubUsingQuickie
+# loginToGithubUsingQuickie
 # # loginToNotionUsingQuickie  #! work in progress
-
 loginNotionWithSeleniumBase
