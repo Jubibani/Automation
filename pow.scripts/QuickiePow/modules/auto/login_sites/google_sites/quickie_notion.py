@@ -142,13 +142,13 @@ class UndetectedLoginTest(BaseCase):
         driver.switch_to.window(window_handles[1])
 
         driver.wait_for_element("//input[@id='identifierId']")
-        driver.type("//input[@id='identifierId']", "strawberryloli3@gmail.com")
+        driver.type("//input[@id='identifierId']", "...")
         
         driver.wait_for_element("#identifierNext")
         driver.click("#identifierNext")
 
         driver.wait_for_element_visible("[aria-label='Enter your password']")
-        driver.type("[aria-label='Enter your password']", "Jubibi'sstrawbibi")
+        driver.type("[aria-label='Enter your password']", "...")
 
         driver.wait_for_element("#passwordNext")
         driver.click("#passwordNext")

@@ -20,7 +20,7 @@ class UndetectedCanvasLogin(BaseCase):
 
         # Enter school email for Canvas login
         driver.wait_for_element("#i0116")
-        driver.type("#i0116", "cao5224@students.uc-bcf.edu.ph")  # Replace selector with the appropriate one
+        driver.type("#i0116", "...")  # Replace selector with the appropriate one
 
         # Click Next button after entering the email
         driver.wait_for_element("#idSIButton9")
@@ -30,7 +30,7 @@ class UndetectedCanvasLogin(BaseCase):
 
         # Enter password
         driver.wait_for_element("#i0118")
-        driver.type("#i0118", "Jubibi'sstrawbibi")  # Replace selector with the appropriate one
+        driver.type("#i0118", "...")  # Replace selector with the appropriate one
 
         # Click Next button to submit login
         driver.wait_for_element("#idSIButton9")
