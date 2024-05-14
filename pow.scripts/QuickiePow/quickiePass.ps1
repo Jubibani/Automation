@@ -1,46 +1,81 @@
-# # Set the path to powershell.exe
-# $powerShellExePath = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
+# Function to find and display the ASCII art
+function Find-And-Display-ASCII {
+    param (
+        [string]$filename
+    )
 
-# Set the path to the ASCII art file
-$asciiArtFilePath = "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation-Local\pow.scripts\QuickiePow\ASCII art\theRock.txt"
+    # Iterate over all directories and subdirectories
+    $fileFound = $false
+    Get-ChildItem -Path "C:\Quickie-Automation" -Recurse -File | ForEach-Object {
+        if ($_.Name -eq $filename) {
+            # Construct the full path to the file
+            $filePath = $_.FullName
+            # Get the content of the ASCII art file
+            $asciiArt = Get-Content $filePath -Raw -Encoding UTF8
+            # Output the ASCII art
+            Write-Host $asciiArt
+            $fileFound = $true
+            return
+        }
+    }
 
-# Get the content of the ASCII art file
-$asciiArt = Get-Content $asciiArtFilePath -Raw -Encoding UTF8
+    if (-not $fileFound) {
+        Write-Host "ASCII art file not found."
+    }
+}
 
-# Output the ASCII art
-Write-Host $asciiArt
+# Call the function to find and display the ASCII art
+Find-And-Display-ASCII -filename "theRock.txt"
+# Function to find and run the target script
+function Find-And-Run-Script {
+    param (
+        [string]$filename
+    )
 
-#* usable functions in here
+    # Iterate over all directories and subdirectories
+    $fileFound = $false
+    Get-ChildItem -Path "C:\Quickie-Automation" -Recurse -File | ForEach-Object {
+        if ($_.Name -eq $filename) {
+            # Construct the full path to the script
+            $scriptPath = $_.FullName
+            # Run the script as a separate process
+            Start-Process -FilePath "python.exe" -ArgumentList $scriptPath -Wait -NoNewWindow
+            $fileFound = $true
+            return
+        }
+    }
+
+    if (-not $fileFound) {
+        Write-Host "Python script file not found."
+    }
+}
+
+# Usable functions in here
 function exit_delay {
-    #im adding a delay. Displaying the count down with a for loop since powshell doesnt have a built-in countdown.
-    Write-Host "implementing delay"
+    # Adding a delay. Displaying the countdown with a for loop since PowerShell doesn't have a built-in countdown.
+    Write-Host "Implementing delay"
     $sleepDuration = 10
     for ($i = $sleepDuration; $i -ge 0; $i--) {
         Write-Host "Exit in $($i)s "
         Start-Sleep -Seconds 1
     }
-    Write-Host "complete..."
+    Write-Host "Complete..."
 }
+
 # Prompt the user for password
-$password = Read-Host "Enter password " -AsSecureString
+$passwordInput = Read-Host "Enter password" -AsSecureString
 
 # Convert secure string to plain text
-$passwordInput = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($password))
-
+$BSTR = [System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($passwordInput)
+$plainPassword = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto($BSTR)
+[System.Runtime.InteropServices.Marshal]::ZeroFreeBSTR($BSTR)
 
 # Check if the password is correct
-if ($passwordInput -eq "HH211R") {
+if ($plainPassword -eq "HH211R") {
     Write-Host "Logging in as Jubibani..."
-    # exit_delay 
-    # Start a new PowerShell process to run quickiePow.ps1
-    Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass", "-File", "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation-Local\pow.scripts\QuickiePow\modules\quickiePow.ps1" -Wait -WindowStyle Hidden 
-    # Start-Process -FilePath "powershell.exe" -ArgumentList "-ExecutionPolicy Bypass", "-File", "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation\pow.scripts\QuickiePow\sampleTest.ps1" -Wait #?Testing Script
-    Exit 1 #? this is only executed until StartProcess is finished Executed
-
-    # $filePath = "C:\Users\CJ\Desktop\LocalRepos\Quickie-Automation\pow.scripts\QuickiePow\quickiePass.ps1" #*Starting this line is to hide the Pass.ps1 file
-    # $fileAttributes = (Get-Item $filePath).Attributes 
-    # $fileAttributes = $fileAttributes -bor [System.IO.FileAttributes]::Hidden
-    # Set-ItemProperty -Path $filePath -Name Attributes -Value $fileAttributes
+    # Call the function to find and run the target script
+    Find-And-Run-Script -filename "quickieLog.py"
+    Exit 1
 } else {
     Write-Host "Wrong password. Exiting..."
     Exit 1
