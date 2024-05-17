@@ -4,6 +4,8 @@ import subprocess
 import csv
 import os
 
+
+
 user_csv = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\user.csv'
 #define funtions for registration and login for the user
 def register_user(username, password):
@@ -50,6 +52,9 @@ def check_user_credentials(username, password):
 # Initialize main Tkinter window
 root = tk.Tk()
 root.title("Homepage")
+#defining the icon logo
+root.iconbitmap("C:\Quickie-Automation\pow.scripts\QuickiePow\logo\logoAppIco.ico")
+
 
 
 #login functionalities
