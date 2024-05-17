@@ -15,7 +15,7 @@ def find_quickie_canvas_and_run_script(filename): #!! Canvas Log in
 # Call the function to find and run the target script
 find_quickie_canvas_and_run_script("quickie_canvas.py")
 
-# time.sleep(3)
+time.sleep(3)
 
 # def find_quickie_github_and_run_script(filename): #!! Github Log in
 #     # Iterate over all directories and subdirectories

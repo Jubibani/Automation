@@ -5,10 +5,6 @@ function Find-And-Display-ASCII {
     )
 
     # Iterate over all directories and subdirectories
-<<<<<<< HEAD
-=======
-    $fileFound = $false
->>>>>>> 07c20af7ebb7a49baccc0a62d264147c3770174e
     Get-ChildItem -Path "C:\Quickie-Automation" -Recurse -File | ForEach-Object {
         if ($_.Name -eq $filename) {
             # Construct the full path to the file
@@ -17,20 +13,10 @@ function Find-And-Display-ASCII {
             $asciiArt = Get-Content $filePath -Raw -Encoding UTF8
             # Output the ASCII art
             Write-Host $asciiArt
-<<<<<<< HEAD
-=======
-            $fileFound = $true
->>>>>>> 07c20af7ebb7a49baccc0a62d264147c3770174e
             return
         }
     }
 
-<<<<<<< HEAD
-=======
-    if (-not $fileFound) {
-        Write-Host "ASCII art file not found."
-    }
->>>>>>> 07c20af7ebb7a49baccc0a62d264147c3770174e
 }
 
 # Call the function to find and display the ASCII art
@@ -49,11 +35,7 @@ function Find-And-Run-Script {
             $scriptPath = $_.FullName
             # Run the script as a separate process
             Start-Process -FilePath "python.exe" -ArgumentList $scriptPath -Wait -NoNewWindow
-<<<<<<< HEAD
             Write-Host "File found"
-=======
-            $fileFound = $true
->>>>>>> 07c20af7ebb7a49baccc0a62d264147c3770174e
             return
         }
     }

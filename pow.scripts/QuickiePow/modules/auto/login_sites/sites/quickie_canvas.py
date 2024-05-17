@@ -45,15 +45,7 @@ class UndetectedCanvasLogin(BaseCase):
         
         # Enter school email for Canvas login
         driver.wait_for_element("#i0116")
-<<<<<<< HEAD
         driver.type("#i0116", email)
-=======
-
-        driver.type("#i0116", "cao5224@students.uc-bcf.edu.ph")  # Replace selector with the appropriate one
-
-        driver.type("#i0116", "...")  # Replace selector with the appropriate one
->>>>>>> 07c20af7ebb7a49baccc0a62d264147c3770174e
-
 
         # Click Next button after entering the email
         driver.wait_for_element("#idSIButton9")
@@ -75,5 +67,15 @@ class UndetectedCanvasLogin(BaseCase):
 
         print("You should be logged in to UC Canvas By Now!") 
 
+
+        try:
+            # Infinite loop to keep the browser open
+            while True:
+                time.sleep(1)  # Keep the browser open
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            driver.quit()
+
+            
 if __name__ == "__main__":
     UndetectedCanvasLogin().login_to_canvas()

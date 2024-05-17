@@ -5,12 +5,13 @@ import csv
 import os
 
 registered = False
+global username, password
 
 # Function to check if user is already registered
-def is_user_registered(username, file_path):
-    if not os.path.isfile(file_path):
+def is_user_registered(username, user_data_file_path):
+    if not os.path.isfile(user_data_file_path):
         return False
-    with open(file_path, mode='r') as file:
+    with open(user_data_file_path, mode='r') as file:
         reader = csv.reader(file)
         for row in reader:
             if row and row[0] == username:
@@ -18,21 +19,24 @@ def is_user_registered(username, file_path):
     return False
 
 # Function to store user data
-def store_user_data(username, password, file_path):
+def store_user_data(username, password, user_data_file_path):
     # Check if the file exists
-    file_exists = os.path.isfile(file_path)
+    file_exists = os.path.isfile(user_data_file_path)
 
     # Open the file in append mode
-    with open(file_path, mode='a', newline='') as file:
+    with open(user_data_file_path, mode='a', newline='') as file:
         writer = csv.writer(file)
 
-        # If the file does not exist, write the header
-        if not file_exists:
+        # If the file does not exist or is empty, write the header
+        if not file_exists or os.stat(user_data_file_path).st_size == 0:
             writer.writerow(['Username', 'Password'])
 
         # Write the user data
         writer.writerow([username, password])
 
+    print("User data stored successfully!")
+
+user_data_file_path = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\user.csv'
 # Function to store site login data
 def store_site_login_data(email, email_password, file_path):
     # Check if the file exists
@@ -51,9 +55,7 @@ def store_site_login_data(email, email_password, file_path):
 
     print("Site login data stored successfully!")
 
-# Example usage
-# email = "example@email.com"
-# email_password = "password123"
+
 file_path = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\login_for_sites\\login_for_sites.csv'
 
 # store_site_login_data(email, email_password, file_path)
