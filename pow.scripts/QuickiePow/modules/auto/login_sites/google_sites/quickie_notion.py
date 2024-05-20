@@ -154,11 +154,20 @@ class UndetectedLoginTest(BaseCase):
         driver.click("#passwordNext")
 
         print("You should be logged in to your Notion By Now!") 
-        while True:
-            print("successfully loaded notion")
 
-            pass #TODO: refactor code where the code completely stops after driver stops
-                #!!bug: sometimes, program still runs despite being exited               
+        try:
+            # Infinite loop to keep the browser open
+            while True:
+                time.sleep(1)  # Keep the browser open
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            driver.quit()
+
+        # while True:
+        #     print("successfully loaded notion")
+
+        #     pass #TODO: refactor code where the code completely stops after driver stops
+        #         #!!bug: sometimes, program still runs despite being exited               
 
 if __name__ == "__main__":
     try:
