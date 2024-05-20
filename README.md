@@ -20,6 +20,6 @@
 ---
 
 ### Installation and Usage
-Quickie Automation Proper Installataion: https://github.com/Jubibani/Quickie-Automation/wiki/Installation-for-Quickie-Automation![image](https://github.com/Jubibani/Quickie-Automation/assets/125711731/371f3a16-ea5a-476e-b2fc-5a14e3e7193e)
+Quickie Automation Proper Installataion: https://github.com/Jubibani/Quickie-Automation/wiki/Installation-for-Quickie-Automation
 
 more to be followed....
