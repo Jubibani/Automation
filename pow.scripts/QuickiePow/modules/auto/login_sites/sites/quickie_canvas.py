@@ -8,6 +8,7 @@ import os
 
 # Define the path to the key file
 key_file_path = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\secret.key'
+file_path = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\login_for_sites\\login_for_sites.csv'
 
 # Ensure the key file exists at the specified path
 if not os.path.exists(key_file_path):
@@ -25,6 +26,7 @@ def decrypt_data(encrypted_data):
 def get_canvas_credentials(file_path):
     try:
         df = pd.read_csv(file_path)
+        print("DataFrame Contents:", df)  # Debugging statement
         if not df.empty:
             email_encrypted = df.iloc[-1]['email']
             password_encrypted = df.iloc[-1]['email_password']
@@ -32,19 +34,14 @@ def get_canvas_credentials(file_path):
             email = decrypt_data(email_encrypted)
             password = decrypt_data(password_encrypted)
             
-            print("Found credentials: Email:", email, "Password:", password)
+            print("Found credentials: Email:", email, "Password:", password)  # Debugging statement
             return email, password
         else:
-            print("No credentials found in the CSV file.")
+            print("No credentials found in the CSV file.")  # Debugging statement
             return None, None
     except Exception as e:
-        print(f"An error occurred while reading the CSV file: {e}")
+        print(f"An error occurred while reading the CSV file: {e}")  # Debugging statement
         return None, None
-
-# Making the driver global
-driver = Driver(uc=True)  # this enables the uc mode
-
-BaseCase.main(__name__, __file__, "--uc", "-s", "--incognito")
 
 class UndetectedCanvasLogin(BaseCase):
     def login_to_canvas(self):
@@ -56,8 +53,9 @@ class UndetectedCanvasLogin(BaseCase):
         time.sleep(3)  # Adjust this delay as needed
 
         # Get QuickieCanvas credentials
-        email, email_password = get_canvas_credentials('C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\login_for_sites\\login_for_sites.csv')
-
+        email, email_password = get_canvas_credentials(file_path)
+        print("decrypted_email: ", email)
+        print("decrypted_email_password: ", email_password)
         # Debugging the email
         if email is None:
             print("Email is None!")  # Debugging statement
@@ -97,4 +95,5 @@ class UndetectedCanvasLogin(BaseCase):
             driver.quit()
 
 if __name__ == "__main__":
+    driver = Driver(uc=True)  # this enables the uc mode
     UndetectedCanvasLogin().login_to_canvas()

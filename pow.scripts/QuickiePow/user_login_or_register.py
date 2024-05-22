@@ -4,9 +4,29 @@ import subprocess
 import csv
 import os
 import bcrypt
+import base64
+from cryptography.fernet import Fernet
+
 
 user_csv = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\user.csv'
 file_path = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\login_for_sites\\login_for_sites.csv'
+
+# Define the path to the key file
+key_file_path = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\secret.key'
+
+# Generate or load the encryption key
+if not os.path.exists(key_file_path):
+    # If the key file doesn't exist, generate a new key and save it
+    key = Fernet.generate_key()
+    with open(key_file_path, 'wb') as key_file:
+        key_file.write(key)
+else:
+    # If the key file exists, load the key from it
+    with open(key_file_path, 'rb') as key_file:
+        key = key_file.read()
+    
+# Initialize a Fernet cipher object with the key
+cipher_suite = Fernet(key)
 
 # Function to hash a password
 def hash_password(password):
@@ -71,12 +91,44 @@ def check_user_credentials(username, password):
     except FileNotFoundError:
         return False
 
+# def store_site_login_data(email, email_password, file_path): ##!Hashed Version
+#     # Check if the file exists
+#     file_exists = os.path.isfile(file_path)
+
+#     # Hash the email password
+#     hashed_email_password = hash_password(email_password)
+
+#     # Open the file in append mode
+#     with open(file_path, mode='a', newline='') as file:
+#         writer = csv.writer(file)
+
+#         # If the file does not exist or is empty, write the header
+#         if not file_exists or os.stat(file_path).st_size == 0:
+#             writer.writerow(['email', 'email_password'])
+
+#         # Write the user data
+#         writer.writerow([email, hashed_email_password.decode('utf-8')])
+
+#     print("Site login data stored successfully!")
+##! Using cryptogrpahy
+# Generate a random encryption key (only once)
+key = Fernet.generate_key()
+cipher_suite = Fernet(key)
+
 def store_site_login_data(email, email_password, file_path):
     # Check if the file exists
     file_exists = os.path.isfile(file_path)
 
-    # Hash the email password
-    hashed_email_password = hash_password(email_password)
+    key = Fernet.generate_key()
+    cipher_suite = Fernet(key)
+
+    # Encrypt the email and email password
+    email_encrypted = cipher_suite.encrypt(email.encode('utf-8'))
+    password_encrypted = cipher_suite.encrypt(email_password.encode('utf-8'))
+
+    # Encode the encrypted data as Base64
+    email_encrypted_base64 = base64.b64encode(email_encrypted).decode('utf-8')
+    password_encrypted_base64 = base64.b64encode(password_encrypted).decode('utf-8')
 
     # Open the file in append mode
     with open(file_path, mode='a', newline='') as file:
@@ -86,8 +138,8 @@ def store_site_login_data(email, email_password, file_path):
         if not file_exists or os.stat(file_path).st_size == 0:
             writer.writerow(['email', 'email_password'])
 
-        # Write the user data
-        writer.writerow([email, hashed_email_password.decode('utf-8')])
+        # Write the encrypted user data
+        writer.writerow([email_encrypted_base64, password_encrypted_base64])
 
     print("Site login data stored successfully!")
 
