@@ -3,14 +3,27 @@ from tkinter import messagebox
 import subprocess
 import csv
 import os
+import bcrypt
 
 user_csv = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\user.csv'
 file_path = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\login_for_sites\\login_for_sites.csv'
 
-# Define functions for registration and login for the user
+# Function to hash a password
+def hash_password(password):
+    salt = bcrypt.gensalt()
+    hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+    return hashed
+
+# Function to check if a password matches a hashed password
+def check_password(password, hashed):
+    return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
+
 def register_user(username, password):
     # Check if the file exists
     file_exists = os.path.isfile(user_csv)
+
+    # Hash the password
+    hashed_password = hash_password(password)
 
     # Open the file in append mode
     with open(user_csv, mode='a', newline='') as file:
@@ -21,7 +34,7 @@ def register_user(username, password):
             writer.writerow(['Username', 'Password'])
 
         # Write the user data
-        writer.writerow([username, password])
+        writer.writerow([username, hashed_password.decode('utf-8')])
 
     messagebox.showinfo("Success", "User registered successfully!")
 
@@ -51,18 +64,21 @@ def check_user_credentials(username, password):
         with open(user_csv, mode='r') as file:
             reader = csv.DictReader(file)
             for row in reader:
-                if row['Username'] == username and row['Password'] == password:
-                    return True
+                if row['Username'] == username:
+                    if check_password(password, row['Password']):
+                        return True
         return False
     except FileNotFoundError:
         return False
 
-# Function to store site login data
 def store_site_login_data(email, email_password, file_path):
     # Check if the file exists
     file_exists = os.path.isfile(file_path)
 
-    # Open the file in append mode  
+    # Hash the email password
+    hashed_email_password = hash_password(email_password)
+
+    # Open the file in append mode
     with open(file_path, mode='a', newline='') as file:
         writer = csv.writer(file)
 
@@ -71,11 +87,10 @@ def store_site_login_data(email, email_password, file_path):
             writer.writerow(['email', 'email_password'])
 
         # Write the user data
-        writer.writerow([email, email_password])
+        writer.writerow([email, hashed_email_password.decode('utf-8')])
 
     print("Site login data stored successfully!")
 
-# Function to validate and register user to the site
 def register_to_site():
     global entry_email, entry_email_password, email_login_window  # Declare as global to use these variables
     email = entry_email.get()
@@ -95,7 +110,6 @@ def register_to_site():
         entry_email.delete(0, tk.END)
         entry_email_password.delete(0, tk.END)
 
-# Function to open login form
 def open_login_form():
     login_window = tk.Toplevel(root)
     login_window.title("Login Form")
@@ -116,11 +130,10 @@ def open_login_form():
             find_quickielog_and_run_script("quickieLog.py")
             login_window.destroy()  # Close login window
         else:
-            messagebox.showerror("Error", "Invalid email or password!")
+            messagebox.showerror("Error", "Invalid username or password!")
 
     tk.Button(login_window, text="Login", command=login).grid(row=2, columnspan=2, pady=10)
 
-# Function to open registration form
 def open_registration_form():
     if is_any_user_registered():
         messagebox.showinfo("Existing User Found", "Currently, the program can only accept one local user.")
@@ -137,7 +150,6 @@ def open_registration_form():
     entry_password = tk.Entry(registration_window, show="*")
     entry_password.grid(row=1, column=1, padx=10, pady=5)
 
-    # Add a label indicating that login details will be saved locally
     tk.Label(registration_window, text="Login details will be saved locally.").grid(row=2, columnspan=2, pady=10)
 
     def register():
@@ -152,21 +164,17 @@ def open_registration_form():
 
     tk.Button(registration_window, text="Register", command=register).grid(row=3, columnspan=2, pady=10)
 
-# Function to open about window
 def open_about_window():
     about_window = tk.Toplevel(root)
     about_window.title("About")
     tk.Label(about_window, text="Quickie Automation is a program developed by Jubibani that is programmed to automate the login to your sites (currently: UC canvas) with the credentials that is saved locally.").pack(padx=20, pady=20)
     tk.Button(about_window, text="Close", command=about_window.destroy).pack(pady=10)
 
-# Function to open email login window
 def open_email_login_window():
     global entry_email, entry_email_password, email_login_window  # Declare as global to use these variables
-    # Create main window for site registration
     email_login_window = tk.Toplevel(root)
     email_login_window.title("Email Login Form")
 
-    # Create and place the labels and entry widgets for site registration
     tk.Label(email_login_window, text="UC email:").grid(row=0, column=0, padx=10, pady=5)
     entry_email = tk.Entry(email_login_window)
     entry_email.grid(row=0, column=1, padx=10, pady=5)
@@ -175,39 +183,27 @@ def open_email_login_window():
     entry_email_password = tk.Entry(email_login_window, show="*")
     entry_email_password.grid(row=1, column=1, padx=10, pady=5)
 
-    # Create and place the register button for site registration
     tk.Button(email_login_window, text="Register to UC", command=register_to_site).grid(row=3, columnspan=2, pady=10)
 
-# Function to handle both registration and email login
 def open_registration_and_email_login():
     open_registration_form()
-    # open_email_login_window()
 
-# Define the function to find and run a script
-def find_quickielog_and_run_script(filename): #!! Login Bridge
-    # Iterate over all directories and subdirectories
+def find_quickielog_and_run_script(filename):  #!! Login Bridge
     for root_dir, dirs, files in os.walk("C:\\Quickie-Automation"):
-        # Check if the target file is found in the current directory
         if filename in files:
-            # Construct the full path to the script
             script_path = os.path.join(root_dir, filename)
-            # Run the script as a separate process
             subprocess.Popen(["python", script_path])
 
-# Initialize main Tkinter window
 root = tk.Tk()
 root.title("Homepage")
 root.iconbitmap("C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\logo\\logoAppIco.ico")
 root.geometry("800x600")  # Set the window size
 
-# Center frame to hold buttons
 center_frame = tk.Frame(root)
 center_frame.place(relx=0.5, rely=0.5, anchor='center')
 
-# Main homepage buttons
 tk.Button(center_frame, text="Login", command=open_login_form).pack(pady=10)
 tk.Button(center_frame, text="Register", command=open_registration_and_email_login).pack(pady=10)
 tk.Button(center_frame, text="About", command=open_about_window).pack(pady=10)
 
-# Start the Tkinter event loop
 root.mainloop()
