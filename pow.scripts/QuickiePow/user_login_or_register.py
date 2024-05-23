@@ -10,7 +10,7 @@ from cryptography.fernet import Fernet
 
 user_csv = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\user.csv'
 file_path = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\login_for_sites\\login_for_sites.csv'
-
+tempfile = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\login_for_sites\\temp\\tempfile.csv'
 # Define the path to the key file
 key_file_path = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\secret.key'
 
@@ -111,16 +111,13 @@ def check_user_credentials(username, password):
 
 #     print("Site login data stored successfully!")
 ##! Using cryptogrpahy
-# Generate a random encryption key (only once)
-key = Fernet.generate_key()
-cipher_suite = Fernet(key)
+# # Generate a random encryption key (only once)
+# key = Fernet.generate_key()
+# cipher_suite = Fernet(key)
 
 def store_site_login_data(email, email_password, file_path):
     # Check if the file exists
     file_exists = os.path.isfile(file_path)
-
-    key = Fernet.generate_key()
-    cipher_suite = Fernet(key)
 
     # Encrypt the email and email password
     email_encrypted = cipher_suite.encrypt(email.encode('utf-8'))
