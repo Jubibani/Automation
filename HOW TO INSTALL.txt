@@ -1,0 +1,13 @@
+HOW TO INSTALL: QUICKIE-AUTOMATION
+=========================================================================================
+
+1. Quickie-Automation should be extracted inside the C: drive.
+- why? because Quickie has been hard coded to work within the C: drive to any computer.
+2. Find the Installation Script and run with powershell.
+- location : "C:\Quickie-Automation\pow.scripts\QuickiePow\modules\install\installation.ps1"
+- run installation.ps1 with powershell.
+3. Quickie should be now sent to desktop and ready to be used.
+4. done.
+
+Help me improve Quickie-Automation. give suggestions, bugs and others in here:
+https://github.com/Jubibani/Quickie-Automation/issues

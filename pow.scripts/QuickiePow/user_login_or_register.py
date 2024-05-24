@@ -10,7 +10,7 @@ from cryptography.fernet import Fernet
 
 user_csv = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\user.csv'
 file_path = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\login_for_sites\\login_for_sites.csv'
-tempfile = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\modules\\auto\\login_sites\\login_user\\login_for_sites\\temp\\tempfile.csv'
+
 # Define the path to the key file
 key_file_path = 'C:\\Quickie-Automation\\pow.scripts\\QuickiePow\\secret.key'
 
@@ -91,30 +91,7 @@ def check_user_credentials(username, password):
     except FileNotFoundError:
         return False
 
-# def store_site_login_data(email, email_password, file_path): ##!Hashed Version
-#     # Check if the file exists
-#     file_exists = os.path.isfile(file_path)
-
-#     # Hash the email password
-#     hashed_email_password = hash_password(email_password)
-
-#     # Open the file in append mode
-#     with open(file_path, mode='a', newline='') as file:
-#         writer = csv.writer(file)
-
-#         # If the file does not exist or is empty, write the header
-#         if not file_exists or os.stat(file_path).st_size == 0:
-#             writer.writerow(['email', 'email_password'])
-
-#         # Write the user data
-#         writer.writerow([email, hashed_email_password.decode('utf-8')])
-
-#     print("Site login data stored successfully!")
 ##! Using cryptogrpahy
-# # Generate a random encryption key (only once)
-# key = Fernet.generate_key()
-# cipher_suite = Fernet(key)
-
 def store_site_login_data(email, email_password, file_path):
     # Check if the file exists
     file_exists = os.path.isfile(file_path)
@@ -234,6 +211,8 @@ def open_email_login_window():
 
     tk.Button(email_login_window, text="Register to UC", command=register_to_site).grid(row=3, columnspan=2, pady=10)
 
+
+##TODO: Use Controller here for adding, unadding and as such
 def open_registration_and_email_login():
     open_registration_form()
 
